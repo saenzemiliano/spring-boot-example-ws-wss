@@ -43,7 +43,6 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 	@Bean
 	public JdbcUserDetailsManager jdbcUserDetailsManager(DataSource dataSource) {
 		JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
-		//jdbcUserDetailsManager.setDataSource(dataSource);
 
 		UserDetails user = User.withUsername("user").password("secret").roles("USER", "OPERATOR")
 				.passwordEncoder(x -> new BCryptPasswordEncoder().encode(x)).build();
@@ -51,12 +50,8 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 		UserDetails admin = User.withUsername("admin").password("secret").roles("USER", "OPERATOR", "ADMIN")
 				.passwordEncoder(x -> new BCryptPasswordEncoder().encode(x)).build();
 
-		UserDetails oUser = User.withUsername("esaenz").password("secret").roles("USER", "OPERATOR")
-				.passwordEncoder(x -> new BCryptPasswordEncoder().encode(x)).build();
-
 		addUser(jdbcUserDetailsManager, user);
 		addUser(jdbcUserDetailsManager, admin);
-		addUser(jdbcUserDetailsManager, oUser);
 		return jdbcUserDetailsManager;
 	}
     
@@ -81,7 +76,7 @@ public class WebServiceConfig extends WsConfigurerAdapter {
     public Wss4jSecurityInterceptor securityInterceptor(){
         Wss4jSecurityInterceptor securityInterceptor = new Wss4jSecurityInterceptor();
         securityInterceptor.setValidationActions("UsernameToken");
-        securityInterceptor.setValidationCallbackHandler(securityCallbackHandler());
+        securityInterceptor.setValidationCallbackHandler(securitySpringBootCallbackHandler());
         return securityInterceptor;
     }
 	
