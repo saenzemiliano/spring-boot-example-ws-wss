@@ -3,9 +3,9 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.springframework</groupId>
-	<artifactId>gs-producing-web-service</artifactId>
-	<version>0.1.0</version>
+	<groupId>com.example.spring_boot.wss</groupId>
+	<artifactId>spring-boot-web-service-security</artifactId>
+	<version>1.0.0</version>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -21,6 +21,15 @@
     </properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>${spring.boot.starter.tomcat.scope}</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
 		<!-- tag::springws[] -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -31,10 +40,6 @@
             <artifactId>spring-ws-security</artifactId>
         </dependency>
        	<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-      	<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<optional>true</optional>
@@ -48,6 +53,8 @@
 			<groupId>wsdl4j</groupId>
 			<artifactId>wsdl4j</artifactId>
 		</dependency>
+		<!-- end::springws[] -->
+		
 		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
 		<dependency>
 		    <groupId>mysql</groupId>
@@ -55,11 +62,14 @@
 		</dependency>
 		
 		
-		
-		<!-- end::springws[] -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -93,5 +103,26 @@
 			<!-- end::xsd[] -->
 		</plugins>
 	</build>
+	
+	
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<packaging.type>jar</packaging.type>
+				<spring.boot.starter.tomcat.scope>compile</spring.boot.starter.tomcat.scope>
+			</properties>
+		</profile>
+		<profile>
+			<id>prod</id>
+			<properties>
+				<packaging.type>war</packaging.type>
+				<spring.boot.starter.tomcat.scope>provided</spring.boot.starter.tomcat.scope>
+			</properties>
+		</profile>
+	</profiles>
 
 </project>

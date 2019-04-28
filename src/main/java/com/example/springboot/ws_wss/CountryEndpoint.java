@@ -13,8 +13,12 @@ import io.spring.guides.gs_producing_web_service.GetCountryResponse;
 public class CountryEndpoint {
 	private static final String NAMESPACE_URI = "http://spring.io/guides/gs-producing-web-service";
 
-	@Autowired
 	private CountryRepository countryRepository;
+
+	@Autowired
+	public CountryEndpoint(CountryRepository countryRepository) {
+		this.countryRepository = countryRepository;
+	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getCountryRequest")
 	@ResponsePayload
