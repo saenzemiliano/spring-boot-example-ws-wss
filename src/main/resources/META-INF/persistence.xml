@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="com.example.spring-boot_demo-spring-boot">
+    <jta-data-source>jdbc/sample</jta-data-source>
+    <class>com.example.springboot.ws_wss.model.db.GroupAuthorities</class>
+    <class>com.example.springboot.ws_wss.model.db.PurchaseOrder</class>
+    <class>com.example.springboot.ws_wss.model.db.MicroMarket</class>
+    <class>com.example.springboot.ws_wss.model.db.Authorities</class>
+    <class>com.example.springboot.ws_wss.model.db.ProductCode</class>
+    <class>com.example.springboot.ws_wss.model.db.Product</class>
+    <class>com.example.springboot.ws_wss.model.db.DiscountCode</class>
+    <class>com.example.springboot.ws_wss.model.db.Customer</class>
+    <class>com.example.springboot.ws_wss.model.db.Groups</class>
+    <class>com.example.springboot.ws_wss.model.db.Manufacturer</class>
+    <class>com.example.springboot.ws_wss.model.db.Users</class>
+    <class>com.example.springboot.ws_wss.model.db.Employee</class>
+    <class>com.example.springboot.ws_wss.model.db.DataEmail</class>
+  </persistence-unit>
+</persistence>

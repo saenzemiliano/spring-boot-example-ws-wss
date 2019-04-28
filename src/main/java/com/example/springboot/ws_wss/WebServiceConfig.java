@@ -1,4 +1,4 @@
-package hello;
+package com.example.springboot.ws_wss;
 
 import java.util.List;
 import java.util.Properties;
@@ -28,11 +28,7 @@ import org.springframework.xml.xsd.XsdSchema;
 
 @EnableWs
 @Configuration
-public class WebServiceConfig extends WsConfigurerAdapter {
-	
-	@Autowired
-	private DataSource dataSource;
-	
+public class WebServiceConfig extends WsConfigurerAdapter  {
 	
     @Bean
     public SimplePasswordValidationCallbackHandler securityCallbackHandler(){
@@ -40,13 +36,6 @@ public class WebServiceConfig extends WsConfigurerAdapter {
         Properties users = new Properties();
         users.setProperty("admin", "secret");
         callbackHandler.setUsers(users);
-        return callbackHandler;
-    }
-    
-    @Bean
-    public SpringSecurityPasswordValidationCallbackHandler springBootSecurityCallbackHandler(){
-        SpringSecurityPasswordValidationCallbackHandler callbackHandler = new SpringSecurityPasswordValidationCallbackHandler();
-        callbackHandler.setUserDetailsService(jdbcUserDetailsManager(dataSource));;
         return callbackHandler;
     }
 
@@ -58,13 +47,14 @@ public class WebServiceConfig extends WsConfigurerAdapter {
         return securityInterceptor;
     }
 
-    @Override
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
     public void addInterceptors(List interceptors) {
         interceptors.add(securityInterceptor());
     }
-	
-	
-	@Bean
+    
+    
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public ServletRegistrationBean messageDispatcherServlet(ApplicationContext applicationContext) {
 		MessageDispatcherServlet servlet = new MessageDispatcherServlet();
 		servlet.setApplicationContext(applicationContext);
@@ -86,36 +76,8 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 	public XsdSchema countriesSchema() {
 		return new SimpleXsdSchema(new ClassPathResource("countries.xsd"));
 	}
+    
+    
 	
-	@Bean
-	public JdbcUserDetailsManager jdbcUserDetailsManager(DataSource dataSource) {
-		JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
 
-		UserDetails user = User.withUsername("user").password("pass").roles("USER", "OPERATOR")
-				.passwordEncoder(x -> new BCryptPasswordEncoder().encode(x)).build();
-
-		UserDetails admin = User.withUsername("admin").password("pass").roles("USER", "OPERATOR", "ADMIN")
-				.passwordEncoder(x -> new BCryptPasswordEncoder().encode(x)).build();
-
-		UserDetails oUser = User.withUsername("esaenz").password("pass").roles("USER", "OPERATOR")
-				.passwordEncoder(x -> new BCryptPasswordEncoder().encode(x)).build();
-
-		addUser(jdbcUserDetailsManager, user);
-		addUser(jdbcUserDetailsManager, admin);
-		addUser(jdbcUserDetailsManager, oUser);
-		return jdbcUserDetailsManager;
-	}
-	
-	private void addUser(JdbcUserDetailsManager jdbcUserDetailsManager, UserDetails user) {
-		if (!jdbcUserDetailsManager.userExists(user.getUsername())) {
-			jdbcUserDetailsManager.createUser(user);
-		} else {
-			jdbcUserDetailsManager.updateUser(user);
-		}
-	}
-	
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
 }

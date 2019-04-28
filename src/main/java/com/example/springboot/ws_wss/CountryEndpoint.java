@@ -1,4 +1,4 @@
-package hello;
+package com.example.springboot.ws_wss;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;

@@ -1,4 +1,4 @@
-package hello;
+package com.example.springboot.ws_wss;
 
 import javax.annotation.PostConstruct;
 import java.util.HashMap;
