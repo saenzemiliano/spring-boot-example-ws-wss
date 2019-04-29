@@ -45,10 +45,10 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 		JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
 
 		UserDetails user = User.withUsername("user").password("secret").roles("USER", "OPERATOR")
-				.passwordEncoder(x -> new BCryptPasswordEncoder().encode(x)).build();
+				.passwordEncoder(x -> x).build();
 
 		UserDetails admin = User.withUsername("admin").password("secret").roles("USER", "OPERATOR", "ADMIN")
-				.passwordEncoder(x -> new BCryptPasswordEncoder().encode(x)).build();
+				.passwordEncoder(x -> x).build();
 
 		addUser(jdbcUserDetailsManager, user);
 		addUser(jdbcUserDetailsManager, admin);
@@ -56,14 +56,14 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 	}
     
 	
-	@Bean
+	/*@Bean
     public SimplePasswordValidationCallbackHandler securityCallbackHandler(){
         SimplePasswordValidationCallbackHandler callbackHandler = new SimplePasswordValidationCallbackHandler();
         Properties users = new Properties();
         users.setProperty("admin", "secret");
         callbackHandler.setUsers(users);
         return callbackHandler;
-    }
+    }*/
 	
 	@Bean
     public SpringSecurityPasswordValidationCallbackHandler securitySpringBootCallbackHandler(){
@@ -89,25 +89,25 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 		return new ServletRegistrationBean(servlet, "/ws/*");
 	}
 
-	@Bean(name = "countries")
+	@Bean(name = CountryEndpoint.ENDPOINT_NAME)
 	public DefaultWsdl11Definition defaultWsdl11Definition(XsdSchema countriesSchema) {
 		DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
-		wsdl11Definition.setPortTypeName("CountriesPort");
-		wsdl11Definition.setLocationUri("/ws");
-		wsdl11Definition.setTargetNamespace("http://spring.io/guides/gs-producing-web-service");
+		wsdl11Definition.setPortTypeName(CountryEndpoint.COUNTRIES_PORT);
+		wsdl11Definition.setLocationUri(CountryEndpoint.LOCATION_URI);
+		wsdl11Definition.setTargetNamespace(CountryEndpoint.NAMESPACE_URI);
 		wsdl11Definition.setSchema(countriesSchema);
 		return wsdl11Definition;
 	}
 
 	@Bean
 	public XsdSchema countriesSchema() {
-		return new SimpleXsdSchema(new ClassPathResource("countries.xsd"));
+		return new SimpleXsdSchema(new ClassPathResource(CountryEndpoint.COUNTRIES_SCHEMA));
 	}
 	
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+	/*
+	 * @Bean public PasswordEncoder passwordEncoder() { return new
+	 * BCryptPasswordEncoder(); }
+	 */
 	
 	
 	private void addUser(JdbcUserDetailsManager jdbcUserDetailsManager, UserDetails user) {

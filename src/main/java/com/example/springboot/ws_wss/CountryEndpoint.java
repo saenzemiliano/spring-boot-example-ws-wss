@@ -6,12 +6,18 @@ import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
+import com.example.springboot.ws_wss.common.Constant;
+
 import io.spring.guides.gs_producing_web_service.GetCountryRequest;
 import io.spring.guides.gs_producing_web_service.GetCountryResponse;
 
 @Endpoint
 public class CountryEndpoint {
-	private static final String NAMESPACE_URI = "http://spring.io/guides/gs-producing-web-service";
+	public static final String ENDPOINT_NAME = "countries";
+	public static final String LOCATION_URI = Constant.GLOBAL_URI + "/"+ ENDPOINT_NAME;
+	public static final String NAMESPACE_URI = "http://spring.io/guides/gs-producing-web-service";
+	public static final String COUNTRIES_PORT = "CountriesPort";
+	public static final String COUNTRIES_SCHEMA = ENDPOINT_NAME + ".xsd";
 
 	private CountryRepository countryRepository;
 
