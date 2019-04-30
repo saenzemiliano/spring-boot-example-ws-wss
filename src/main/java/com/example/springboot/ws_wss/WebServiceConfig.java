@@ -26,13 +26,15 @@ import org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition;
 import org.springframework.xml.xsd.SimpleXsdSchema;
 import org.springframework.xml.xsd.XsdSchema;
 
-@EnableWs
 @Configuration
+@EnableWs
 public class WebServiceConfig extends WsConfigurerAdapter {
 	
 	@Autowired
 	private DataSource dataSource;
 
+	
+	
     @SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
     public void addInterceptors(List interceptors) {
@@ -43,12 +45,12 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 	@Bean
 	public JdbcUserDetailsManager jdbcUserDetailsManager(DataSource dataSource) {
 		JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
-
+		
 		UserDetails user = User.withUsername("user").password("secret").roles("USER", "OPERATOR")
-				.passwordEncoder(x -> x).build();
+				.passwordEncoder(x -> new BCryptPasswordEncoder().encode(x)).build(); //x -> new BCryptPasswordEncoder().encode(x)
 
 		UserDetails admin = User.withUsername("admin").password("secret").roles("USER", "OPERATOR", "ADMIN")
-				.passwordEncoder(x -> x).build();
+				.passwordEncoder(x -> new BCryptPasswordEncoder().encode(x)).build();
 
 		addUser(jdbcUserDetailsManager, user);
 		addUser(jdbcUserDetailsManager, admin);
@@ -104,10 +106,12 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 		return new SimpleXsdSchema(new ClassPathResource(CountryEndpoint.COUNTRIES_SCHEMA));
 	}
 	
-	/*
-	 * @Bean public PasswordEncoder passwordEncoder() { return new
-	 * BCryptPasswordEncoder(); }
-	 */
+	
+	/*@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}*/
+	 
 	
 	
 	private void addUser(JdbcUserDetailsManager jdbcUserDetailsManager, UserDetails user) {

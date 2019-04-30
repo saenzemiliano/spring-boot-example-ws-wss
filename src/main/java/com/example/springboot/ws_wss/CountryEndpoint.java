@@ -19,12 +19,9 @@ public class CountryEndpoint {
 	public static final String COUNTRIES_PORT = "CountriesPort";
 	public static final String COUNTRIES_SCHEMA = ENDPOINT_NAME + ".xsd";
 
+	@Autowired
 	private CountryRepository countryRepository;
 
-	@Autowired
-	public CountryEndpoint(CountryRepository countryRepository) {
-		this.countryRepository = countryRepository;
-	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getCountryRequest")
 	@ResponsePayload
