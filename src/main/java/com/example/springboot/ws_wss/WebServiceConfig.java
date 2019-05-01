@@ -47,10 +47,10 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 		JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
 		
 		UserDetails user = User.withUsername("user").password("secret").roles("USER", "OPERATOR")
-				.passwordEncoder(x -> new BCryptPasswordEncoder().encode(x)).build(); //x -> new BCryptPasswordEncoder().encode(x)
+				.passwordEncoder(x -> new AppPasswordEncoder().encode(x)).build(); //x -> new BCryptPasswordEncoder().encode(x)
 
 		UserDetails admin = User.withUsername("admin").password("secret").roles("USER", "OPERATOR", "ADMIN")
-				.passwordEncoder(x -> new BCryptPasswordEncoder().encode(x)).build();
+				.passwordEncoder(x -> new AppPasswordEncoder().encode(x)).build();
 
 		addUser(jdbcUserDetailsManager, user);
 		addUser(jdbcUserDetailsManager, admin);
