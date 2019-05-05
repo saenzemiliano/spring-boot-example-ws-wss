@@ -1,7 +1,6 @@
 package com.example.springboot.ws_wss;
 
 import java.io.IOException;
-import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -150,7 +149,7 @@ public class AppUsernameTokenValidator implements Validator {
 			throw new WSSecurityException(WSSecurityException.ErrorCode.FAILED_AUTHENTICATION);
 		}
 		if (usernameToken.isHashed()) {
-			String passDigest;
+			/*String passDigest;
 			if (passwordsAreEncoded) {
 				LOG.log(Level.SEVERE, "/////////////////////////////222");
 				passDigest = UsernameToken.doPasswordDigest(nonce, createdTime,
@@ -163,7 +162,8 @@ public class AppUsernameTokenValidator implements Validator {
 			
 			if (!matches(passDigest, password)) {
 				throw new WSSecurityException(WSSecurityException.ErrorCode.FAILED_AUTHENTICATION);
-			}
+			}*/
+			throw new WSSecurityException(WSSecurityException.ErrorCode.FAILED_AUTHENTICATION, new Exception("PasswordDigest is not allowed"));
 		} else {
 			if (!matches(origPassword, password)) {
 				throw new WSSecurityException(WSSecurityException.ErrorCode.FAILED_AUTHENTICATION);
@@ -174,7 +174,7 @@ public class AppUsernameTokenValidator implements Validator {
 	
 
 	private boolean matches(String encodedPassword, String rawPassword) {
-		LOG.log(Level.INFO, "EncodedPassword: "+ encodedPassword +"  RawPassword: " + rawPassword);
+		//LOG.log(Level.INFO, "EncodedPassword: "+ encodedPassword +"  RawPassword: " + rawPassword);
 		return (new BCryptPasswordEncoder()).matches(rawPassword, encodedPassword);
 	}
 
